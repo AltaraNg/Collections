@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Altara Credit Customer Approval</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css"> -->
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+
+</head>
+
+<body>
+    <div id="root">
+
+        <div class="container">
+
+            <header style="width:100%;background-color:#EEEEEE;;color:#00264d ;height:200px">
+                <div>
+                    <img src="../altara_logo.png" alt="" style="width:213px; height:80px;">
+                    <h1 style="color: #00264d ; text-align:center"> Customer Approval Portal</h1>
+                </div>
+
+            </header>
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color: #00264d;">Altara Credit Customer Approval</div>
+                <div class="panel-body">
+                    <div class="clear"></div>
+
+                    <div class="row" style=" margin:10px;padding:10px;">
+                        <div class="col-sm-6" style="margin:0 auto; margin-bottom:10px;">
+                            <div style="margin:0 auto; width:250px;"><img src="../excel.png" width="40" height="40" />
+
+                                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-small" style="font-size:12px">Download Customer Data</button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="margin:0 auto; margin-bottom:10px;">
+                            <div style="margin:0 auto;width:250px;">
+                                <img src="../ok.png" width="40" height="40" />
+
+                                <button type="button" data-toggle="modal" data-target="#myModal1" class="btn btn-success btn-small" style="font-size:12px">Approve Customer</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content" style="height:300px;">
+                            <div class="modal-header" style="background-color:#00264d; color:white;">
+                                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+                                <h4 class="modal-title">Download Customer Data</h4>
+
+                            </div>
+                            <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
+                                <label>Date of Registration</label>
+                                <input type="date" placeholder="Enter Registration Date  Here.." v-model="Regdate" class="form-control">
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button v-if="Regdate !=''" type="button" @click="downloadCustomerData()" class="btn btn-success btn-small" style="font-size:12px;margin:0 auto;">Download Customer Data</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal -->
+                <div id="myModal1" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <p class="alert alert-danger alert-dismissable" v-if='errorMessage'>
+                            <a href="#" class="close" v-on:click="resetMessage" data-dismiss="alert" aria-label="close">&times;</a> {{errorMessage}}
+                        </p>
+                        <p class="alert alert-success alert-dismissable" v-if='successMessage'>
+                            <a href="#" class="close" v-on:click="resetMessage" data-dismiss="alert" aria-label="close">&times;</a> {{successMessage}}
+                        </p>
+                        <!-- Modal content-->
+                        <div class="modal-content" style="height:300px;">
+                            <div class="modal-header" style="background-color:#00264d; color:white;">
+                                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+                                <h4 class="modal-title">Approve Customer</h4>
+
+                            </div>
+                            <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
+                                <label>Customer ID</label>
+                                <input type="text" placeholder="Enter Customer ID Here.." v-model="Customer_id" class="form-control">
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" @click="CheckId()" class="btn btn-success btn-small" style="font-size:12px;margin:0 auto;">Approve Customer</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="../axios.js">
+    </script>
+    <script type="text/javascript" src="../download.js">
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/vue@2.5.2">
+    </script>
+    <script type="text/javascript" src="../app.js">
+    </script>
+
+</body>
+
+</html>
+<script>
+    // $(document).ready(function() {
+    //     $(".btn-pref .btn").click(function() {
+    //         $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+    //         // $(".tab").addClass("active"); // instead of this do the below 
+    //         $(this).removeClass("btn-default").addClass("btn-primary");
+    //     });
+    // });
+</script>

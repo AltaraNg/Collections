@@ -1,696 +1,258 @@
-const ERRORS = {
-    required: 'This field is required.',
-    minLength: 'The length should be minimum 8 characters.',
-    invalidEmail: 'This is not a valid email address.',
-    invalidTel: 'This is not a valid Telephone Number.'
-}
 var app = new Vue({
     el: '#root',
     data: {
         errorMessage: "",
         successMessage: "",
-        Newdata: {
-            fname: '',
-            mname: '',
-            lname: '',
-            city: '',
-            state: '',
-            telno: '',
-            dobirth: '',
-            yearTm: '',
-            civil_status: '',
-            gender: '',
-            duration: '',
-            home: '',
-            householdno: '',
-            workno: '',
-            dependno: '',
-            childrenno: '',
-            education: '',
-            visittime_to: '',
-            visittime_fro: '',
-            pastloan: '',
-            pastloanamt: '',
-            payback: '',
-            email: '',
-            rincome: '',
-            ctype: '',
-            ctelNo: '',
-            phonenowork: '',
-            cstate: '',
-            ccity: '',
-            cname: '',
-            cposition: '',
-            mincome: '',
-            bincome: '',
-            checkedDofWork: [],
-            DofWork: '',
-            nextofkinfname: '',
-            nextofkinlname: '',
-            nextofkinmname: '',
-            nextofkin: '',
-            nokgender: '',
-            noktelno: '',
-            nokduraton: '',
-            workguafname: '',
-            workguamname: '',
-            workgualname: '',
-            guareladship: '',
-            guaworkduraton: '',
-            guagender: '',
-            guacity: '',
-            guastate: '',
-            guatelno: '',
-            pguafname: '',
-            pguamname: '',
-            pgualname: '',
-            pguareladship: '',
-            pguaworkduraton: '',
-            pguagender: '',
-            pguacity: '',
-            pguastate: '',
-            pguatelno: '',
-            amtonfood: '',
-            amtontransport: '',
-            nearestBstop: '',
-            streetname: '',
-            houseno: '',
-            addaddinfo: '',
-            cnearestBstop: '',
-            cstreetname: '',
-            chouseno: '',
-            caddaddinfo: '',
-            cvisittime_to: '',
-            cvisittime_fro: '',
-            guanearestBstop: '',
-            guastreetname: '',
-            guahouseno: '',
-            guaaddaddinfo: '',
-            pguanearestBstop: '',
-            pguastreetname: '',
-            pguahouseno: '',
-            pguaaddaddinfo: '',
-            Empname: '',
-            Empnumber: '',
-            Regdate: '',
-            addarea: '',
-            norooms: '',
-            empstatus: '',
-            currentsal: '',
-            paymentperiod: '',
-            cnokduraton: '',
-            market: '',
-            bacct: '',
-            mgains: '',
-            carea: '',
-            pguaarea: '',
-            guaarea: '',
-        },
-        submitted: false,
-        submition: false,
-        emailFeedback: '',
-        TelFeedback: '',
-        paybackFeedback: '',
-        worksellFeedback: '',
-        DofWOptions: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Friday"
-        ],
+        Regdate: "",
+        Customer_id: "",
+        tabs: [{
+                name: "3 Days Reminder SMS",
+                id: 0,
+                isActive: true
+            },
+            {
+                name: "1 Day Overdue SMS",
+                id: 1,
+                isActive: false
+            },
+            {
+                name: "16 Days Overdue SMS/CALL",
+                id: 2,
+                isActive: false
+            },
+            {
+                name: "31 Days Overdue SMS/VISIT",
+                id: 3,
+                isActive: false
+            }
 
-        StateOptions: [
-            "Abia",
-            "Adamawa",
-            "Akwa Ibom",
-            "Anambra",
-            "Bauchi",
-            "Bayelsa",
-            "Benue",
-            "Borno",
-            "Cross River",
-            "Delta",
-            "Ebonyi",
-            "Edo",
-            "Ekiti",
-            "Enugu",
-            "Gombe",
-            "Imo",
-            "Jigawa",
-            "Kaduna",
-            "Kano",
-            "Katsina",
-            "Kebbi",
-            "Kogi",
-            "Kwara",
-            "Lagos",
-            "Nasarawa",
-            "Niger",
-            "Ogun",
-            "Ondo",
-            "Osun",
-            "Oyo",
-            "Plateau",
-            "Rivers",
-            "Sokoto",
-            "Taraba",
-            "Yobe",
-            "Zamfara",
-            "FCT"
-        ]
+        ],
+        activeTab: {},
+        reminder_customers: [],
+        overdue1_customers: [],
+        overdue2_customers: [],
+        overdue3_customers: [],
+        comment: {},
+        select_call: false,
+        checKiD: [],
+        phoneNo: '',
+        CustName: ''
+
     },
 
     mounted: function() {
         console.log('mounted');
-
+        this.getReminderSMS();
+        this.get1DayOverdue();
+        this.get16DaysOverdue();
+        this.get31DaysOverdue();
     },
 
     computed: {
 
-        emptyEmpname() { return this.Newdata.Empname === '' },
-        emptyEmpnumber() { return this.Newdata.Empnumber === '' },
-        emptyRegdate() { return this.Newdata.Regdate === '' },
-        emptyaddarea() { return this.Newdata.addarea === '' },
-        emptyempstatus() { return this.Newdata.empstatus === '' },
-
-        emptyfname() { return this.Newdata.fname === '' },
-        emptylname() { return this.Newdata.lname === '' },
-        emptynearestBstop() { return this.Newdata.nearestBstop === '' },
-        emptystreetname() { return this.Newdata.streetname === '' },
-        emptyhouseno() { return this.Newdata.houseno === '' },
-        emptycity() { return this.Newdata.city === '' },
-
-
-
-        emptystate() { return this.Newdata.state === '' },
-        emptydobirth() { return this.Newdata.dobirth === '' },
-        untickgender() { return this.Newdata.gender === '' },
-        untickCivil() { return this.Newdata.civil_status === '' },
-        emptyyearTm() { return this.Newdata.yearTm === '' },
-        untickhome() { return this.Newdata.home === '' },
-
-        unticknorooms() { return this.Newdata.norooms === '' },
-
-        emptyduration() { return this.Newdata.duration === '' },
-        emptyhouseholdno() { return this.Newdata.householdno === '' },
-        emptyworkno() { return this.Newdata.workno === '' },
-        emptydependno() { return this.Newdata.dependno === '' },
-        emptychildrenno() { return this.Newdata.childrenno === '' },
-        emptyeducation() { return this.Newdata.education === '' },
-        emptyvisittime_to() { return this.Newdata.visittime_to === '' },
-        emptyvisittime_fro() { return this.Newdata.visittime_fro === '' },
-        emptynextofkinfname() { return this.Newdata.nextofkinfname === '' },
-        emptynextofkinlname() { return this.Newdata.nextofkinlname === '' },
-        emptynextofkin() { return this.Newdata.nextofkin === '' },
-        emptynokgender() { return this.Newdata.nokgender === '' },
-
-        emptynoktelno() {
-            if (this.Newdata.noktelno == '' || !this.isCorrectTel(this.Newdata.noktelno)) {
-                this.TelFeedback = ERRORS.invalidTel
-                return true
-            }
-            return false
-        },
-
-        emptynokduraton() { return this.Newdata.nokduraton === '' },
-        emptyworkguafname() { return this.Newdata.workguafname === '' },
-        emptyworkgualname() { return this.Newdata.workgualname === '' },
-        emptyguareladship() { return this.Newdata.guareladship === '' },
-        emptyguaworkduraton() { return this.Newdata.guaworkduraton === '' },
-        emptyguacity() { return this.Newdata.guacity === '' },
-        emptyguanearestBstop() { return this.Newdata.guanearestBstop === '' },
-        emptyguastreetname() { return this.Newdata.guastreetname === '' },
-        emptyguahouseno() { return this.Newdata.guahouseno === '' },
-        emptyguagender() { return this.Newdata.guagender === '' },
-        emptyguastate() { return this.Newdata.guastate === '' },
-        emptyguatelno() {
-            if (this.Newdata.guatelno == '' || !this.isCorrectTel(this.Newdata.guatelno)) {
-                this.TelFeedback = ERRORS.invalidTel
-                return true
-            }
-            return false
-
-        },
-        emptypguafname() { return this.Newdata.pguafname === '' },
-        emptypgualname() { return this.Newdata.pgualname === '' },
-        emptypguareladship() { return this.Newdata.pguareladship === '' },
-        emptypguaworkduraton() { return this.Newdata.pguaworkduraton === '' },
-        emptypguacity() { return this.Newdata.pguacity === '' },
-        emptypguanearestBstop() { return this.Newdata.pguanearestBstop === '' },
-        emptypguastreetname() { return this.Newdata.pguastreetname === '' },
-        emptypguahouseno() { return this.Newdata.pguahouseno === '' },
-        emptypguagender() { return this.Newdata.pguagender === '' },
-        emptypguastate() { return this.Newdata.pguastate === '' },
-        emptypguatelno() {
-            if (this.Newdata.pguatelno == '' || !this.isCorrectTel(this.Newdata.pguatelno)) {
-                this.TelFeedback = ERRORS.invalidTel
-                return true
-            }
-            return false
-        },
-        emptypguaarea() { return this.Newdata.pguaarea === '' },
-        emptyguaarea() { return this.Newdata.guaarea === '' },
-
-
-        emptyamtonfood() { return this.Newdata.amtonfood === '' },
-        emptyamtontransport() { return this.Newdata.amtontransport === '' },
-        untickpastloan() { return this.Newdata.pastloan === '' },
-        untickpayback() { return this.Newdata.payback === '' },
-        checkfield() { return this.Newdata.pastloan === '' },
-        wrongEmail() {
-            if (this.Newdata.email != '' && !this.isEmail(this.Newdata.email)) {
-                this.emailFeedback = ERRORS.invalidEmail
-                return true
-            }
-            return false
-        },
-
-        wrongTel() {
-            if (this.Newdata.telno == '' || !this.isCorrectTel(this.Newdata.telno)) {
-                this.TelFeedback = ERRORS.invalidTel
-                return true
-            }
-            return false
-        },
-
-        emptypayback() {
-            if (this.Newdata.payback === '' && !(this.Newdata.pastloan === '')) {
-                this.paybackFeedback = ERRORS.required;
-                return true
-            }
-
-            return false
-        },
-
-        emptycurrentsal() {
-            if (this.Newdata.currentsal === '' && (this.Newdata.empstatus === 'Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptypaymentperiod() {
-            if (this.Newdata.paymentperiod === '' && (this.Newdata.empstatus === 'Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptyrincome() {
-            if (this.Newdata.rincome === '' && (this.Newdata.empstatus === 'Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptycposition() {
-            if (this.Newdata.cposition === '' && this.Newdata.empstatus === 'Salaried') {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptymarket() {
-            if (this.Newdata.market === '' && (this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptybacct() {
-            if (this.Newdata.bacct === '' && (this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-        emptymgains() {
-            if (this.Newdata.mgains === '' && (this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-        emptybincome() {
-            if (this.Newdata.bincome === '' && (this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptyctime() {
-            if (this.Newdata.ctime === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptymincome() {
-            if (this.Newdata.mincome === '' && ((this.Newdata.cbelong === 'Housewife' && this.Newdata.hwork === 'Yes') || this.Newdata.work != '')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-
-        emptyctelNo() {
-            if ((this.Newdata.ctelNo == '' || !this.isCorrectTel(this.Newdata.ctelNo)) && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.TelFeedback = ERRORS.invalidTel
-                return true
-            }
-            return false
-        },
-        emptyphonenowork() {
-
-            if (this.Newdata.phonenowork === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-
-        },
-        emptycstate() {
-            if (this.Newdata.cstate === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-        emptyccity() {
-            if (this.Newdata.ccity === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-        emptycnokduraton() {
-            if (this.Newdata.cnokduraton === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptycnearestBstop() {
-            if (this.Newdata.cnearestBstop === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptychouseno() {
-            if (this.Newdata.chouseno === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptycstreetname() {
-            if (this.Newdata.cstreetname === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-
-        emptycname() {
-            if (this.Newdata.cname === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptyselect() {
-            if (this.Newdata.checkedDofWork === [] && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-        emptycarea() {
-            if (this.Newdata.carea === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptycvisittime_to() {
-
-            if (this.Newdata.cvisittime_to === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        emptycvisittime_fro() {
-
-            if (this.Newdata.cvisittime_fro === '' && (this.Newdata.empstatus === 'Salaried' || this.Newdata.empstatus === 'Non-Salaried')) {
-                this.worksellFeedback = ERRORS.required;
-                return true
-            }
-            return false
-        },
-
-        checkcivil() {
-            if ((this.Newdata.civil_status != 'Single' && this.Newdata.yearTm != '') || (this.Newdata.civil_status == 'Single' && this.Newdata.yearTm == '')) {
-                return false;
-            } else return true;
-        },
-
-        checkloandetails() {
-            if ((this.Newdata.pastloan == 'Yes' && this.Newdata.pastloanamt != '' && this.Newdata.payback != '') || (this.Newdata.pastloan == 'No' && this.Newdata.pastloanamt == '' && this.Newdata.payback == '')) {
-                return false;
-            } else return true;
-        },
-        checkworkdetails() {
-            if ((this.Newdata.empstatus == 'Salaried' && this.checksaldetails == false) || (this.Newdata.empstatus == 'Non-Salaried' && this.checkbizdetails == false ||
-                    (this.Newdata.empstatus == 'Unemployed'))) {
-                return false;
-            } else return true;
-        },
-
-        checksaldetails() {
-            if (
-                this.emptyphonenowork == true ||
-                this.emptycname == true ||
-                this.emptycurrentsal == true ||
-                this.emptyrincome == true ||
-                this.emptypaymentperiod == true ||
-                this.emptycposition == true ||
-                this.emptycnokduraton == true ||
-                this.emptyselect == true ||
-                this.emptycstate == true ||
-                this.emptyccity == true ||
-                this.emptycnearestBstop == true ||
-                this.emptycstreetname == true ||
-                this.emptychouseno == true ||
-                this.emptyctelNo == true ||
-                this.emptycarea == true) {
-                return true;
-            } else return false;
-        },
-
-        checkbizdetails() {
-            if (
-                this.emptyphonenowork == true ||
-                this.emptycname == true ||
-                this.emptymarket == true ||
-                this.emptybincome == true ||
-                this.emptybacct == true ||
-                this.emptymgains == true ||
-                this.emptycnokduraton == true ||
-                this.emptyselect == true ||
-                this.emptycstate == true ||
-                this.emptyccity == true ||
-                this.emptycnearestBstop == true ||
-                this.emptycstreetname == true ||
-                this.emptychouseno == true ||
-                this.emptyctelNo == true ||
-                this.emptycarea == true
-            ) {
-                return true;
-            } else return false;
-        }
+    },
+    ready: function() {
+        this.setActive(this.tabs[0]);
 
     },
-
     methods: {
-        isEmail(email) {
-            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email)
-        },
 
-        isCorrectTel(telno) {
-            return telno.length == 11
-        },
-
-        validateForm(event) {
-
-            var i = 0;
-            while (i <= (app.Newdata.checkedDofWork).length - 1) {
-                if ((app.Newdata.checkedDofWork).length - 1 === i) {
-                    app.Newdata.DofWork = app.Newdata.DofWork + app.Newdata.checkedDofWork[i];
-                } else {
-                    app.Newdata.DofWork = app.Newdata.DofWork + app.Newdata.checkedDofWork[i] + ',';
+        setActive: function(tab) {
+            var self = this;
+            tab.isActive = true;
+            this.activeTab = tab;
+            /*this.activeTab.isActive = true;*/
+            console.log("activeTab name=" + this.activeTab.name);
+            this.tabs.forEach(function(tab) {
+                console.log("TAB => " + tab);
+                console.log("activeTab id => " + self.activeTab.id);
+                console.log("tab id=" + tab.id);
+                if (self.activeTab.id == 1) {
+                    app.select_call = false;
                 }
-                i++;
-            }
 
-            console.log(this.checkbizdetails);
-            console.log(app.Newdata);
+                if (tab.id !== self.activeTab.id) { tab.isActive = false; }
+            });
+        },
 
-            if (
-                this.emptyfname ||
-                this.emptylname ||
-                this.emptynearestBstop ||
-                this.emptystreetname ||
-                this.emptyhouseno ||
-                this.emptycity ||
-                this.emptystate ||
-                this.wrongTel ||
-                this.untickgender ||
-                this.untickCivil ||
-                this.untickhome ||
-                this.unticknorooms ||
-                this.emptyduration ||
-                this.emptyhouseholdno ||
-                this.emptyworkno ||
-                this.emptydependno ||
-                this.emptychildrenno ||
-                this.emptyeducation ||
-                this.emptyvisittime_to ||
-                this.emptyvisittime_fro ||
-                this.emptynextofkinfname ||
-                this.emptynextofkinlname ||
-                this.emptynextofkin ||
-                this.emptynokgender ||
-                this.emptynoktelno ||
-                this.emptynokduraton ||
-                this.emptyworkguafname ||
-                this.emptyworkgualname ||
-                this.emptyguareladship ||
-                this.emptyguaworkduraton ||
-                this.emptyguacity ||
-                this.emptyguanearestBstop ||
-                this.emptyguastreetname ||
-                this.emptyguahouseno ||
-                this.emptyguagender ||
-                this.emptyguastate ||
-                this.emptyguatelno ||
-                this.emptypguafname ||
-                this.emptypgualname ||
-                this.emptypguareladship ||
-                this.emptypguaworkduraton ||
-                this.emptypguacity ||
-                this.emptypguanearestBstop ||
-                this.emptypguastreetname ||
-                this.emptypguahouseno ||
-                this.emptypguagender ||
-                this.emptypguastate ||
-                this.emptypguatelno ||
-                this.emptyamtonfood ||
-                this.emptyamtontransport ||
-                this.checkloandetails ||
-                this.checkworkdetails ||
-                this.emptyEmpname ||
-                this.emptyEmpnumber ||
-                this.emptyRegdate ||
-                this.emptyaddarea ||
-                this.checkbizdetails ||
-                this.checksaldetails
-            ) {
-                event.preventDefault()
-                this.submition = true
-                app.errorMessage = 'All field must be filled!';
+        getReminderSMS: function() {
+            axios.get("https://wafcolapi.herokuapp.com/api.php?action=reminder")
+                .then(function(response) {
+                    console.log(response);
+                    if (response.data.error) {
+                        app.errorMessage = response.data.message;
+                    } else {
+                        app.reminder_customers = response.data.users;
+
+
+                    }
+                });
+        },
+        get1DayOverdue: function() {
+            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue1")
+                .then(function(response) {
+                    /*   console.log(response); */
+                    if (response.data.error) {
+                        app.errorMessage = response.data.message;
+                    } else {
+                        app.overdue1_customers = response.data.users;
+                    }
+                });
+        },
+        get16DaysOverdue: function() {
+            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue2")
+                .then(function(response) {
+                    /*   console.log(response); */
+                    if (response.data.error) {
+                        app.errorMessage = response.data.message;
+                    } else {
+                        app.overdue2_customers = response.data.users;
+                    }
+                });
+        },
+
+        get31DaysOverdue: function() {
+            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue3")
+                .then(function(response) {
+                    /*   console.log(response); */
+                    if (response.data.error) {
+                        app.errorMessage = response.data.message;
+                    } else {
+                        app.overdue3_customers = response.data.users;
+                    }
+                });
+        },
+
+
+        downloadCustomerData: function() {
+            console.log(app.Regdate);
+
+            axios.post("https://wafcolapi.herokuapp.com/api.php?action=download", {
+                    RegDate: app.Regdate
+
+                }, { withCredentials: true }, { responseType: 'blob' }, {
+                    headers: {
+                        'Accept': 'Content-Type: text/csv',
+                    }
+                })
+                .then(function(response) {
+                    download(response.data, app.Regdate + 'customerdata.csv');
+                });
+        },
+
+        ApproveCustomer: function(name, telnumber) {
+            console.log(app.Customer_id)
+            if (app.checKiD.length == 1) {
+
+                axios.post("https://wafcolapi.herokuapp.com/api.php?action=approve", {
+                        Customer_id: app.Customer_id
+                    })
+                    .then(function(response) {
+                        console.log(response);
+
+                        if (response.data.error) {
+                            app.submitted = false;
+                            app.errorMessage = response.data.message;
+
+                            setTimeout(function() {
+                                app.errorMessage = '';
+                            }, 1000);
+
+                        } else {
+                            app.submitted = false;
+                            app.successMessage = response.data.message;
+                            app.sendNotification(name, telnumber)
+                            setTimeout(function() {
+                                app.successMessage = '';
+                            }, 1000);
+
+                        }
+                    });
+            } else {
+                app.errorMessage = "Customer ID Doesnt Exist";
+
                 setTimeout(function() {
                     app.errorMessage = '';
-                }, 10000);
-
-
-            } else {
-                event.preventDefault()
-                this.submition = true
-                this.saveUser();
-                console.log("Prepared for Db");
-                this.clearfeilds();
-                app.submition = false;
+                }, 1000);
             }
+
+
         },
 
-        saveUser: function() {
-            app.submitted = true;
-            var formData = app.toFormData(app.Newdata);
+        CheckId: function() {
 
-            axios.post("https://wafcolapi.herokuapp.com/api.php?action=create", formData)
+
+            axios.post("https://wafcolapi.herokuapp.com/api.php?action=checkId", {
+                    Customer_id: app.Customer_id
+                })
                 .then(function(response) {
                     console.log(response);
 
                     if (response.data.error) {
-                        app.submitted = false;
                         app.errorMessage = response.data.message;
 
                         setTimeout(function() {
                             app.errorMessage = '';
-                        }, 10000);
-
+                        }, 1000);
 
                     } else {
-                        app.submitted = false;
-                        app.successMessage = response.data.message;
-
-                        setTimeout(function() {
-                            app.successMessage = '';
-                        }, 10000);
-
+                        app.checKiD = response.data.checklist;
+                        if (app.checKiD.length != 0) {
+                            app.CustName = response.data.checklist[0].first_name
+                            app.phoneNo = response.data.checklist[0].telephone
+                        }
+                        app.ApproveCustomer(app.CustName, app.phoneNo);
+                        app.Customer_id = "";
                     }
                 });
+        },
 
+
+        resetMessage: function() {
+            app.errorMessage = "";
+            app.successMessage = "";
         },
 
 
 
+        updateComment: function() {
 
-        resetdetailfill: function(event) {
-            this.Newdata.checkedDofWork = [];
-            this.Newdata.phonenowork = '';
-            this.Newdata.DofWork = '';
-            this.Newdata.cname = '';
-            this.Newdata.market = '';
-            this.Newdata.bincome = '';
-            this.Newdata.bacct = '';
-            this.Newdata.mgains = '';
-            this.Newdata.cnokduraton = '';
-            this.Newdata.cstate = '';
-            this.Newdata.ccity = '';
-            this.Newdata.cnearestBstop = '';
-            this.Newdata.cstreetname = '';
-            this.Newdata.chouseno = '';
-            this.Newdata.ctelNo = '';
-            this.Newdata.carea = '';
-            this.Newdata.currentsal = '';
-            this.Newdata.rincome = '';
-            this.Newdata.paymentperiod = '';
-            this.Newdata.cposition = '';
+            if (app.comment.Res == undefined || app.comment.Comment == undefined) {
+                app.errorMessage = "Fill in all fields before submission";
+                setTimeout(function() {
+                    app.errorMessage = '';
+                }, 2000);
+            } else {
+                app.comment.Comment = app.comment.Res + ", " + app.comment.Comment;
+                var formData = app.toFormData(app.comment);
 
+                axios.post("https://wafcolapi.herokuapp.com/api.php?action=comment", formData)
+                    .then(function(response) {
+                        console.log(response);
+                        app.comment = {};
+                        if (response.data.error) {
+                            app.errorMessage = response.data.message;
+                            /*     app.clearMessage(); */
+                        } else {
+                            app.getReminderSMS();
+                            app.get1DayOverdue();
+                            app.get16DaysOverdue();
+                            app.get31DaysOverdue();
+                            app.successMessage = response.data.message;
+                            setTimeout(function() {
+                                app.successMessage = '';
+
+                            }, 2000);
+
+                        }
+                    });
+            }
         },
 
+        selectUser(comment_id) {
+            app.comment.Transaction_id = comment_id;
+            console.log(app.comment.Transaction_id);
+        },
 
         toFormData: function(obj) {
             var form_data = new FormData();
@@ -700,110 +262,27 @@ var app = new Vue({
             return form_data;
         },
 
-        resetMessage: function(event) {
-            app.successMessage = '';
-            app.errorMessage = '';
-        },
 
-        clearfeilds: function() {
-            app.Newdata = {
-                fname: '',
-                mname: '',
-                lname: '',
-                city: '',
-                state: '',
-                telno: '',
-                dobirth: '',
-                yearTm: '',
-                civil_status: '',
-                gender: '',
-                duration: '',
-                home: '',
-                householdno: '',
-                workno: '',
-                dependno: '',
-                childrenno: '',
-                education: '',
-                visittime_to: '',
-                visittime_fro: '',
-                pastloan: '',
-                pastloanamt: '',
-                payback: '',
-                email: '',
-                rincome: '',
-                ctype: '',
-                ctelNo: '',
-                phonenowork: '',
-                cstate: '',
-                ccity: '',
-                cname: '',
-                cposition: '',
-                mincome: '',
-                bincome: '',
-                checkedDofWork: [],
-                DofWork: '',
-                nextofkinfname: '',
-                nextofkinlname: '',
-                nextofkinmname: '',
-                nextofkin: '',
-                nokgender: '',
-                noktelno: '',
-                nokduraton: '',
-                workguafname: '',
-                workguamname: '',
-                workgualname: '',
-                guareladship: '',
-                guaworkduraton: '',
-                guagender: '',
-                guacity: '',
-                guastate: '',
-                guatelno: '',
-                pguafname: '',
-                pguamname: '',
-                pgualname: '',
-                pguareladship: '',
-                pguaworkduraton: '',
-                pguagender: '',
-                pguacity: '',
-                pguastate: '',
-                pguatelno: '',
-                amtonfood: '',
-                amtontransport: '',
-                nearestBstop: '',
-                streetname: '',
-                houseno: '',
-                addaddinfo: '',
-                cnearestBstop: '',
-                cstreetname: '',
-                chouseno: '',
-                caddaddinfo: '',
-                cvisittime_to: '',
-                cvisittime_fro: '',
-                guanearestBstop: '',
-                guastreetname: '',
-                guahouseno: '',
-                guaaddaddinfo: '',
-                pguanearestBstop: '',
-                pguastreetname: '',
-                pguahouseno: '',
-                pguaaddaddinfo: '',
-                Empname: '',
-                Empnumber: '',
-                Regdate: '',
-                addarea: '',
-                norooms: '',
-                empstatus: '',
-                currentsal: '',
-                paymentperiod: '',
-                cnokduraton: '',
-                market: '',
-                bacct: '',
-                mgains: '',
-                carea: '',
-                pguaarea: '',
-                guaarea: '',
-            }
+        sendNotification(name, telnumber) {
+            telnumber = telnumber.substr(1);
+            let message = "Dear " + name + ", Congratulations, You have been approved. Come to the store to make a purchase. Altara Credit Limited.";
+            // axios.get("http://api.smartsmssolutions.com/smsapi.php?username=bjmarcson&password=fabregas10&sender=Altara&recipient=" + telnumber + "&message=" + message + "")
+            axios.get("https://api.infobip.com/sms/1/text/query?username=Oluwatoke12&password=Altara99&to=" + 234 + telnumber + "&text=" + message + "")
 
+            .then(function(response2) {
+                console.log(response2);
+                if (response2.status == 200) {
+                    app.successMessage = "Notification sent to Customer";
+
+                    setTimeout(function() {
+                        app.successMessage = '';
+                    }, 2000);
+                    // updateRemark(Updata)
+                } else {
+                    app.errorMessage = "Error Sending Message, Contact Support";
+                }
+            });
         }
+
     }
 });
