@@ -130,7 +130,7 @@ var app = new Vue({
             axios.post("https://wafcolapi.herokuapp.com/api.php?action=download", {
                     RegDate: app.Regdate
 
-                }, { withCredentials: true }, { responseType: 'blob' }, {
+                }, { responseType: 'blob' }, {
                     headers: {
                         'Accept': 'Content-Type: text/csv',
                     }
