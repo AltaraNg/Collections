@@ -5,6 +5,7 @@ var app = new Vue({
         successMessage: "",
         Regdate: "",
         Customer_id: "",
+        dataloaded: false,
         tabs: [{
                 name: "3 Days Reminder SMS",
                 id: 0,
@@ -42,6 +43,7 @@ var app = new Vue({
 
     mounted: function() {
         console.log('mounted');
+
         this.getReminderSMS();
         this.get1DayOverdue();
         this.get16DaysOverdue();
@@ -76,6 +78,7 @@ var app = new Vue({
         },
 
         getReminderSMS: function() {
+
             axios.get("https://wafcolapi.herokuapp.com/api.php?action=reminder")
                 .then(function(response) {
                     console.log(response);
@@ -114,6 +117,7 @@ var app = new Vue({
         get31DaysOverdue: function() {
             axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue3")
                 .then(function(response) {
+                    app.dataloaded = false;
                     /*   console.log(response); */
                     if (response.data.error) {
                         app.errorMessage = response.data.message;
@@ -121,10 +125,12 @@ var app = new Vue({
                         app.overdue3_customers = response.data.users;
                     }
                 });
+
         },
 
 
         downloadCustomerData: function() {
+            app.dataloaded = true;
             console.log(app.Regdate);
 
             axios.post("https://wafcolapi.herokuapp.com/api.php?action=download", {
@@ -137,10 +143,13 @@ var app = new Vue({
                 })
                 .then(function(response) {
                     download(response.data, app.Regdate + 'customerdata.csv');
+                    app.Regdate = "";
+                    app.dataloaded = false;
                 });
         },
 
         ApproveCustomer: function(name, telnumber) {
+
             console.log(app.Customer_id)
             if (app.checKiD.length == 1) {
 
@@ -173,7 +182,9 @@ var app = new Vue({
 
                 setTimeout(function() {
                     app.errorMessage = '';
+
                 }, 1000);
+
             }
 
 
@@ -181,13 +192,13 @@ var app = new Vue({
 
         CheckId: function() {
 
-
+            app.dataloaded = true;
             axios.post("https://wafcolapi.herokuapp.com/api.php?action=checkId", {
                     Customer_id: app.Customer_id
                 })
                 .then(function(response) {
                     console.log(response);
-
+                    app.dataloaded = false;
                     if (response.data.error) {
                         app.errorMessage = response.data.message;
 
@@ -212,8 +223,6 @@ var app = new Vue({
             app.errorMessage = "";
             app.successMessage = "";
         },
-
-
 
         updateComment: function() {
 

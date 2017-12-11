@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Altara Credit Customer Registration</title>
+    <title>Altara Credit Customer Approval</title>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css"> -->
     <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->
 
@@ -29,7 +29,7 @@
                 <div class="panel-heading" style="background-color: #00264d;">Altara Credit Collections</div>
                 <div class="panel-body">
                     <div class="clear"></div>
-
+                    <div class="loading" v-if='dataloaded'>Loading&#8230;</div>
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" v-for="tab in tabs" :class="{active:tab.isActive}">
                             <a href="#" role="tab" data-toggle="tab" @click.stop.prevent="setActive(tab)">{{ tab.name }}</a>

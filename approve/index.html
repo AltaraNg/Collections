@@ -58,7 +58,7 @@
                             <div class="modal-header" style="background-color:#00264d; color:white;">
                                 <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
                                 <h4 class="modal-title">Download Customer Data</h4>
-
+                                <div class="loading" v-if='dataloaded'>Loading&#8230;</div>
                             </div>
                             <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
                                 <label>Date of Registration</label>
@@ -83,6 +83,8 @@
                         <p class="alert alert-success alert-dismissable" v-if='successMessage'>
                             <a href="#" class="close" v-on:click="resetMessage" data-dismiss="alert" aria-label="close">&times;</a> {{successMessage}}
                         </p>
+
+                        <div class="loading" v-if='dataloaded'>Loading&#8230;</div>
                         <!-- Modal content-->
                         <div class="modal-content" style="height:300px;">
                             <div class="modal-header" style="background-color:#00264d; color:white;">
