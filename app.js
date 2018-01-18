@@ -79,7 +79,7 @@ var app = new Vue({
 
         getReminderSMS: function() {
 
-            axios.get("https://wafcolapi.herokuapp.com/api.php?action=reminder")
+            axios.get("https://altara-api.herokuapp.com/api.php?action=reminder")
                 .then(function(response) {
                     console.log(response);
                     if (response.data.error) {
@@ -92,7 +92,7 @@ var app = new Vue({
                 });
         },
         get1DayOverdue: function() {
-            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue1")
+            axios.get("https://altara-api.herokuapp.com/api.php?action=overdue1")
                 .then(function(response) {
                     /*   console.log(response); */
                     if (response.data.error) {
@@ -103,7 +103,7 @@ var app = new Vue({
                 });
         },
         get16DaysOverdue: function() {
-            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue2")
+            axios.get("https://altara-api.herokuapp.com/api.php?action=overdue2")
                 .then(function(response) {
                     /*   console.log(response); */
                     if (response.data.error) {
@@ -115,7 +115,7 @@ var app = new Vue({
         },
 
         get31DaysOverdue: function() {
-            axios.get("https://wafcolapi.herokuapp.com/api.php?action=overdue3")
+            axios.get("https://altara-api.herokuapp.com/api.php?action=overdue3")
                 .then(function(response) {
                     app.dataloaded = false;
                     /*   console.log(response); */
@@ -133,7 +133,7 @@ var app = new Vue({
             app.dataloaded = true;
             console.log(app.Regdate);
 
-            axios.post("https://wafcolapi.herokuapp.com/api.php?action=download", {
+            axios.post("https://altara-api.herokuapp.com/api.php?action=download", {
                     RegDate: app.Regdate
 
                 }, { responseType: 'blob' }, {
@@ -153,7 +153,7 @@ var app = new Vue({
             console.log(app.Customer_id)
             if (app.checKiD.length == 1) {
 
-                axios.post("https://wafcolapi.herokuapp.com/api.php?action=approve", {
+                axios.post("https://altara-api.herokuapp.com/api.php?action=approve", {
                         Customer_id: app.Customer_id
                     })
                     .then(function(response) {
@@ -193,7 +193,7 @@ var app = new Vue({
         CheckId: function() {
 
             app.dataloaded = true;
-            axios.post("https://wafcolapi.herokuapp.com/api.php?action=checkId", {
+            axios.post("https://altara-api.herokuapp.com/api.php?action=checkId", {
                     Customer_id: app.Customer_id
                 })
                 .then(function(response) {
@@ -235,7 +235,7 @@ var app = new Vue({
                 app.comment.Comment = app.comment.Res + ", " + app.comment.Comment;
                 var formData = app.toFormData(app.comment);
 
-                axios.post("https://wafcolapi.herokuapp.com/api.php?action=comment", formData)
+                axios.post("https://altara-api.herokuapp.com/api.php?action=comment", formData)
                     .then(function(response) {
                         console.log(response);
                         app.comment = {};
