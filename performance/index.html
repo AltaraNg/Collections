@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Employees Performance Metrics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->
+    <link rel="stylesheet" type="text/css" href="css.css" />  
+</head>
+<body>
+    <div id="root">
+        <div class="container" style="background-color:#00264d;">
+
+            <header style="width:100%;background-color:#EEEEEE;color:#00264d ;height:200px">
+                <div>
+                    <img src="altara_logo.png" alt="" style="width:213px; height:80px;">
+                    <h1 style="color: #00264d ; text-align:center"> Employees Performance Metrics</h1>
+                </div>
+
+            </header>
+
+            <div class="panel panel-primary" style="background-color:#00264d;">
+                <div class="panel-heading" style="background-color: #00264d;">Employees performance Metrics</div>
+                <div class="panel-body">
+                        <p class="alert alert-danger alert-dismissable" v-if='errorMessageChk'>
+                                {{errorMessageChk}}
+                            </p>
+                            <p class="alert alert-success alert-dismissable" v-if='successMessageChk'>
+                                {{successMessageChk}}
+                            </p>
+                        <div class="row" style=" margin:10 auto;" >
+                                <div class="col-sm-6 form-group" >
+                                        <label style="color:#fff;">From</label>
+                                        <input type="date" placeholder="Enter Date  Here.." v-model="endDate" class="form-control">
+                                       
+                                    </div>
+
+                                    <div class="col-sm-6 form-group" >
+                                            <label style="color:#fff;">To</label>
+                                            <input type="date" placeholder="Enter Date  Here.." v-model="startDate" class="form-control">                                           
+                                        </div>
+                            </div>
+                            
+                    <div class="calendar-container" v-if="loaded">
+                            <table  v-if="List_dsa" class="calendar" style=" margin:10 auto;float:left">                             
+                                    <thead>
+                                     <tr>
+                                            <td>Date/Dsa</td>
+                                       
+                                      </tr>
+                                    </thead>
+                              
+                                    <tbody>
+                                               <tr><td>002</td> </tr>
+                                               <tr><td>003</td></tr> 
+                                               <tr> <td>004</td></tr> 
+                                               <tr> <td>005</td></tr> 
+                                               <tr><td>006</td></tr> 
+                                               <tr> <td>007</td></tr>  
+                                               <tr><td>008</td></tr> 
+                                               <tr> <td>009</td> </tr>
+                                    </tbody>
+                              
+                                  </table>
+                        
+                            <table  v-for="list in List_dsa" class="calendar" style=" margin:10 auto;float:left">                             
+                              <thead>
+                               <tr>
+                                
+                                <td>{{list.day}}</td>
+                                 
+                                </tr>
+                              </thead>
+                       
+                              <tbody>
+                                   
+                                  <tr> <td>{{list.dsa001}}</td></tr>
+                                  <tr> <td>{{list.dsa002}}</td></tr>
+                                  <tr> <td>{{list.dsa003}}</td></tr>
+                                  <tr> <td>{{list.dsa004}}</td></tr>
+                                  <tr> <td>{{list.dsa005}}</td></tr>
+                                  <tr> <td>{{list.dsa006}}</td></tr>
+                                  <tr> <td>{{list.dsa007}}</td></tr>
+                                  <tr> <td>{{list.dsa008}}</td></tr>
+                              </tbody> 
+                        
+                            </table>
+                        
+
+                            <table  class="calendar" style=" margin:10 auto;float:left">                             
+                                    <thead>
+                                     <tr>
+                                      <td>Total</td>
+                                       
+                                      </tr>
+                                    </thead>
+                              
+                                    <tbody>
+                                     <tr v-for="emp in EmpAverage" ><td>{{emp}}</td></tr>
+                                    </tbody>
+                              
+                            </table>
+                            <table class="calendar" style=" margin:10 auto;float:left">                             
+                                    <thead>
+                                     <tr>
+                                      <td>Average</td>
+                                       
+                                      </tr>
+                                    </thead>
+                              
+                                    <tbody>
+                                            <tr v-for="emp in EmpAverage" ><td>{{ (emp/(diffInDays+1)).toFixed(1)}}</td></tr>
+                                    </tbody>
+                              
+                            </table>
+
+                          </div> <!-- end calendar-container -->
+
+                          <line-chart v-if="loaded"></line-chart>
+
+                </div>
+            </div>
+
+                 
+                
+                </div> <!-- end container -->
+
+                <button type="button" v-if="startDate != '' && endDate != '' " @click="ListCustomers" class="btn btn-success btn-small" style="display:block; font-size:12px;margin:0 auto;">Submit</button>
+    </div>
+          
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+    <script type="text/javascript" src="axios.js">
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/vue@2.5.2">
+    </script>
+    <script type="text/javascript" src="app.js">
+    </script>
+
+</body>
+
+</html>
