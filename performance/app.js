@@ -30,6 +30,7 @@ var app = new Vue({
         CheckCusId: "",
         register: false,
         loaded:false,
+        loaded:hide,
         Personal_Guarantor: '',
         Work_Guarantor: '',
         List_dsa: [],
@@ -70,8 +71,8 @@ var app = new Vue({
                 }, 1000);
 
             }
-            else if ( date1.setHours(0,0,0,0) <=  date2.setHours(0,0,0,0)) {
-                app.errorMessageChk = "InValid Date Range, Hint: StartDate must be greater than Enddate";
+            else if ( (date1.setHours(0,0,0,0) <=  date2.setHours(0,0,0,0)) && (Number(diffDays) < 7 )  ) {
+                app.errorMessageChk = "InValid Date Range, Hint: StartDate must be greater than Enddate and Date difference must not exceed 6";
                 setTimeout(function () {
                     app.errorMessageChk = '';
                 }, 1000);
