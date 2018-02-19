@@ -30,7 +30,7 @@ var app = new Vue({
         CheckCusId: "",
         register: false,
         loaded:false,
-        loaded:hide,
+        hide:true,
         Personal_Guarantor: '',
         Work_Guarantor: '',
         List_dsa: [],
