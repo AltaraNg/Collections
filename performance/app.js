@@ -78,7 +78,7 @@ var app = new Vue({
                 }, 1000);
             }
             else
-                axios.post("http://localhost/altaracredit/altara_api/api.php?action=rate",
+                axios.post("https://altara-api.herokuapp.com/api.php?action=rate",
                     {
                         startDate: app.startDate,
                         endDate: app.endDate
