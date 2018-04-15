@@ -78,16 +78,13 @@ var app = new Vue({
         },
 
         getReminderSMS: function() {
-
-            axios.get("https://altara-api.herokuapp.com/api.php?action=reminder")
+            axios.get("https://altara-api.herokuapp.com/api.php?action=autoreminder")
                 .then(function(response) {
                     console.log(response);
                     if (response.data.error) {
                         app.errorMessage = response.data.message;
                     } else {
                         app.reminder_customers = response.data.users;
-
-
                     }
                 });
         },
