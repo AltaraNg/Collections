@@ -31,20 +31,36 @@
                     <div class="clear"></div>
 
                     <div class="row" style=" margin:10px;padding:10px;">
-                        <div class="col-sm-6" style="margin:0 auto; margin-bottom:10px;">
+                        <div class="col-sm-4" style="margin:0 auto; margin-bottom:10px;">
                             <div style="margin:0 auto; width:250px;"><img src="../excel.png" width="40" height="40" />
 
                                 <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-small" style="font-size:12px">Download Customer Data</button>
                             </div>
                         </div>
 
-                        <div class="col-sm-6" style="margin:0 auto; margin-bottom:10px;">
+                        <!-- <div class="col-sm-3" style="margin:0 auto; margin-bottom:10px;">
                             <div style="margin:0 auto;width:250px;">
                                 <img src="../ok.png" width="40" height="40" />
 
                                 <button type="button" data-toggle="modal" data-target="#myModal1" class="btn btn-success btn-small" style="font-size:12px">Approve Customer</button>
                             </div>
+                        </div> -->
+
+
+                        <div class="col-sm-4" style="margin:0 auto; margin-bottom:10px;">
+                            <div style="margin:0 auto; width:250px;"><img src="../excel.png" width="40" height="40" />
+
+                                <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-small" style="font-size:12px">Download Sales Invoice Data</button>
+                            </div>
                         </div>
+
+                        <div class="col-sm-4" style="margin:0 auto; margin-bottom:10px;">
+                            <div style="margin:0 auto; width:250px;"><img src="../excel.png" width="40" height="40" />
+
+                                <button type="button" data-toggle="modal" data-target="#myModal3" class="btn btn-success btn-small" style="font-size:12px">Download Deposit Data</button>
+                            </div>
+                        </div>
+
 
 
                     </div>
@@ -103,8 +119,73 @@
                     </div>
 
                 </div>
+<!-- Modal -->
+<div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content" style="height:300px;">
+            <div class="modal-header" style="background-color:#00264d; color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+                <h4 class="modal-title">Download Sales Invoice Data</h4>
+                <div class="loading" v-if='dataloaded'>Loading&#8230;</div>
+            </div>
+            <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
+              <div class="col-sm-6 form-group" >
+                    <label>From </label>
+                        <input type="date" placeholder="Enter Date  Here.." v-model="inv_startDate" class="form-control">
+                       
+                    </div>
 
+                    <div class="col-sm-6 form-group" >
+                        <label>To</label>
+                            <input type="date" placeholder="Enter Date  Here.." v-model="inv_endDate" class="form-control">                                           
+                        </div>
+            
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button  type="button" @click="downloadInvoice(inv_startDate, inv_endDate)" class="btn btn-success btn-small" style="font-size:12px;margin:0 auto;">Download Invoice</button>
+        </div>
+    </div>
+
+</div>
+<!-- Modal -->
+<div id="myModal3" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="height:300px;">
+            <div class="modal-header" style="background-color:#00264d; color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+                <h4 class="modal-title">Download Deposit Data</h4>
+                <div class="loading" v-if='dataloaded'>Loading&#8230;</div>
+            </div>
+            <!-- <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
+                <label>Date of Registration</label>
+                <input type="date" placeholder="Enter Registration Date  Here.." v-model="Regdate" class="form-control">
+            </div> -->
+       
+            <div class="" style="padding:30px;height:200px;width:80%;margin:0 auto; margin-top:20px;background-color:#EEEEEE">
+                <div class="col-sm-6 form-group" >
+                      <label>From </label>
+                          <input type="date" placeholder="Enter Date  Here.." v-model="dep_startDate" class="form-control">
+                         
+                      </div>
+  
+                      <div class="col-sm-6 form-group" >
+                          <label>To</label>
+                              <input type="date" placeholder="Enter Date  Here.." v-model="dep_endDate" class="form-control">                                           
+                          </div>
+              
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button  type="button" @click="downloadDeposite(dep_startDate,dep_endDate)" class="btn btn-success btn-small" style="font-size:12px;margin:0 auto;">Download Deposit Data</button>
+        </div>
+    </div>
+
+</div>
             </div>
 
         </div>
